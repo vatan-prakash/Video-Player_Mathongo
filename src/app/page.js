@@ -1,11 +1,14 @@
 
-"use client"
+"use client";
 import { useState, useEffect } from 'react';
 import VideoPlayer from '../components/VideoPlayer';
 import Notes from '../components/Notes';
 import pako from 'pako';
 
 const decompressData = (data) => {
+  if (typeof window === 'undefined') {
+    return {};
+  }
   try {
     const decompressedData = pako.inflate(atob(data), { to: 'string' });
     return JSON.parse(decompressedData);
@@ -21,9 +24,15 @@ export default function Home() {
   const [notes, setNotes] = useState({});
 
   useEffect(() => {
-    const savedNotes = localStorage.getItem('notes');
-    if (savedNotes) {
-      setNotes(decompressData(savedNotes));
+    if (typeof window !== 'undefined') {
+      try {
+        const savedNotes = localStorage.getItem('notes');
+        if (savedNotes) {
+          setNotes(decompressData(savedNotes));
+        }
+      } catch (error) {
+        console.error("Error accessing localStorage:", error);
+      }
     }
   }, []);
 

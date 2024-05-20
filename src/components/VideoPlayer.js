@@ -1,4 +1,4 @@
-// components/VideoPlayer.js
+"use client"
 import React, { useEffect, useRef } from 'react';
 import YouTube from 'react-youtube';
 

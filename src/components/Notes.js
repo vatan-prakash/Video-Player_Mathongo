@@ -1,9 +1,9 @@
-'use client'
+"use client"
 import React, { useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
-// Custom toolbar configuration
+
 const modules = {
     toolbar: {
         container: [
@@ -12,7 +12,7 @@ const modules = {
             ['bold', 'italic', 'underline', 'strike', 'blockquote'],
             [{ 'list': 'ordered'}, { 'list': 'bullet' }],
             ['link', 'image'],
-            [{ 'color': [] }, { 'background': [] }], // Add color and background color options
+            [{ 'color': [] }, { 'background': [] }], 
             ['clean']
         ],
         handlers: {
@@ -102,7 +102,7 @@ const Notes = ({ videoId, currentTime, notes, setNotes }) => {
                 </div>
                 <div className='w-[152px] h-[40px] flex justify-center items-center gap-8px rounded-[8px] cursor-pointer' onClick={() => { setAddNote(true); setNoteText(''); setEditNoteIndex(null); }} style={{ boxShadow: "0px 1px 2px 0px #1018280D", border: "1px solid #1D1D1D" }}>
                     <img src="/plus.svg" className='w-[20px] h-[20px]' />
-                    <div className='text-[14px] text-[600] ml-4'>Add new Note</div>
+                    <div className='text-[14px] text-[600] ml-4' >Add new Note</div>
                 </div>
             </div>
             {addNote && <div>
@@ -114,7 +114,7 @@ const Notes = ({ videoId, currentTime, notes, setNotes }) => {
                     modules={modules}
                     formats={formats}
                 />
-                <div className='w-[152px] h-[40px] flex justify-center items-center gap-8px rounded-[8px] cursor-pointer mt-8' onClick={editNoteIndex !== null ? handleSaveEditNote : handleAddNote} style={{ boxShadow: "0px 1px 2px 0px #1018280D", border: "1px solid #1D1D1D" }}>
+                <div className='w-[152px] h-[40px] flex justify-center items-center gap-8px rounded-[8px] cursor-pointer mt-[60px]' onClick={editNoteIndex !== null ? handleSaveEditNote : handleAddNote} style={{ boxShadow: "0px 1px 2px 0px #1018280D", border: "1px solid #1D1D1D" }}>
                     <div className='text-[14px] text-[600] ml-1'>{editNoteIndex !== null ? 'Save Note' : 'Add Note'}</div>
                 </div>
             </div>}
@@ -139,8 +139,8 @@ const Notes = ({ videoId, currentTime, notes, setNotes }) => {
                         </div>
                         <div className="mt-2 p-3 rounded-[8px]" style={{ border: "1px solid #EAECF0", boxShadow: "0px 1px 2px 0px #1018280D" }} dangerouslySetInnerHTML={{ __html: note.content }}></div>
                         <div className='flex justify-end mt-2 gap-2'>
-                            <div className='w-[98px] py-1 px-5/2 rounded-[8px] text-[14px] flex justify-center items-center cursor-pointer' style={{ border: "1px solid #EAECF0", boxShadow: "0px 1px 2px 0px #1018280D" }} onClick={() => handleEditNote(index)}>Edit Note</div>
-                            <div className='w-[98px] py-1 px-5/2 rounded-[8px] text-[14px] flex justify-center items-center cursor-pointer' onClick={() => handleDeleteNote(index)} style={{ border: "1px solid #EAECF0", boxShadow: "0px 1px 2px 0px #1018280D" }}>Delete Note</div>
+                            <div className='w-[98px] py-1 px-5/2 rounded-[8px] text-[14px] flex justify-center items-center cursor-pointer' style={{ border: "1px solid #1D1D1D", boxShadow: "0px 1px 2px 0px #1D1D1D" }} onClick={() => handleEditNote(index)}>Edit Note</div>
+                            <div className='w-[98px] py-1 px-5/2 rounded-[8px] text-[14px] flex justify-center items-center cursor-pointer' onClick={() => handleDeleteNote(index)} style={{ border: "1px solid #1D1D1D", boxShadow: "0px 1px 2px 0px #1D1D1D" }}>Delete Note</div>
                         </div>
                     </li>
                 ))}

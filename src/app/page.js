@@ -1,8 +1,19 @@
-// app/page.js
+
 "use client"
 import { useState, useEffect } from 'react';
 import VideoPlayer from '../components/VideoPlayer';
 import Notes from '../components/Notes';
+import pako from 'pako';
+
+const decompressData = (data) => {
+  try {
+    const decompressedData = pako.inflate(atob(data), { to: 'string' });
+    return JSON.parse(decompressedData);
+  } catch (e) {
+    console.error("Failed to decompress data:", e);
+    return {};
+  }
+};
 
 export default function Home() {
   const [videoId, setVideoId] = useState('M7lc1UVf-VE');
@@ -12,7 +23,7 @@ export default function Home() {
   useEffect(() => {
     const savedNotes = localStorage.getItem('notes');
     if (savedNotes) {
-      setNotes(JSON.parse(savedNotes));
+      setNotes(decompressData(savedNotes));
     }
   }, []);
 

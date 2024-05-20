@@ -1,9 +1,7 @@
-
 'use client'
 import React, { useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import pako from 'pako';  // For compressing data
 
 // Custom toolbar configuration
 const modules = {
@@ -40,10 +38,6 @@ function handleImageUpload() {
     input.onchange = async () => {
         const file = input.files[0];
         if (file) {
-            if (file.size > 1024 * 1024) { // Restrict size to 1MB
-                alert("Image size should be less than 1MB.");
-                return;
-            }
             const reader = new FileReader();
             reader.onload = (e) => {
                 const base64ImageSrc = e.target.result;
@@ -55,19 +49,6 @@ function handleImageUpload() {
         }
     };
 }
-
-// Function to compress data
-const compressData = (data) => {
-    const stringData = JSON.stringify(data);
-    const compressedData = pako.deflate(stringData, { to: 'string' });
-    return btoa(compressedData);
-};
-
-// Function to decompress data
-const decompressData = (data) => {
-    const decompressedData = pako.inflate(atob(data), { to: 'string' });
-    return JSON.parse(decompressedData);
-};
 
 const Notes = ({ videoId, currentTime, notes, setNotes }) => {
     const [noteText, setNoteText] = useState('');
@@ -85,22 +66,14 @@ const Notes = ({ videoId, currentTime, notes, setNotes }) => {
         setNotes(updatedNotes);
         setNoteText('');
         setAddNote(false);
-        try {
-            localStorage.setItem('notes', compressData(updatedNotes));
-        } catch (e) {
-            console.error("Failed to save notes to localStorage:", e);
-        }
+        localStorage.setItem('notes', JSON.stringify(updatedNotes));
     };
 
     const handleDeleteNote = (index) => {
         const updatedNotes = { ...notes };
-        updatedNotes[videoId] = updatedNotes[videoId].filter((_, i) => i !== index);
+        updatedNotes[videoId].splice(index, 1);
         setNotes(updatedNotes);
-        try {
-            localStorage.setItem('notes', compressData(updatedNotes));
-        } catch (e) {
-            console.error("Failed to save notes to localStorage:", e);
-        }
+        localStorage.setItem('notes', JSON.stringify(updatedNotes));
     };
 
     const handleEditNote = (index) => {
@@ -117,11 +90,7 @@ const Notes = ({ videoId, currentTime, notes, setNotes }) => {
         setNoteText('');
         setAddNote(false);
         setEditNoteIndex(null);
-        try {
-            localStorage.setItem('notes', compressData(updatedNotes));
-        } catch (e) {
-            console.error("Failed to save notes to localStorage:", e);
-        }
+        localStorage.setItem('notes', JSON.stringify(updatedNotes));
     };
 
     return (
